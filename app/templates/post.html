@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block body%}
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+
+{% include 'includes/_messages.html' %}
+ {% from "/includes/_formhelpers.html" import render_field %}
+
+<!--================Blog Area =================-->
+<section class="blog_area section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mb-5 mb-lg-0">
+                <div class="blog_left_sidebar">
+                    <article class="blog_item">
+                        <div class="blog_item_img">
+
+                        </div>
+
+                        <div class="blog_details">
+                        
+                            <a class="d-inline-block" href="single-blog.html">
+                                <a href="{{url_for('post',post_id=post.id)}}">
+                                        <img src="{{url_for('static', filename=post.image_filename)}}" >
+                                    <h2>{{ post.title }} </h2>
+                                   </a>  
+                                  <p> {{post.author}}</p>
+                                  <p>{{ moment(post.date_posted).format('Do MMMM, YYYY. h:mm:ss a') }}</p>
+                                  <div>
+                                     <p> {{ post.content }} </p>
+                                  </div>
+{% if current_user.is_authenticated %}
+                                    <div>
+                                        <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('update_blog', post_id=post.id)}}">update blog</a>
+                                        <form action="{{ url_for('delete_blog', post_id=post.id)}}" method="POST">
+                                            <button class="btn btn-danger pull-right">Delete</button>
+                                    </form>
+                                    </div>
+                                  {% endif %}
+                                
+                            <ul class="blog-info-link">
+                                <li><a href="#"><i class="fa fa-user"></i> ({{ post.views }}) Views</a></li>
+                                <li><a href="#"><i class="fa fa-comments"></i> {{ post.commentts }}</a></li>
+                            </ul>
+                            
+                        </div>
+                    </article>
+    
+                    <div class="container">
+                        <div class="row">
+                    <div class="col-lg-8 col-md-10 mx-auto">
+                            <p>Comments:</p>
+                    {% for comment in comments %}
+                    {% if comment %}
+                    <div class="post-preview">
+                        <a href="{{ url_for('post',post_id=post.id) }}">
+                    By: {{ comment.name }}
+                        </a> <br>
+                      {{comment.content}} 
+                    <br>
+                    {{moment(comment.date_commented).format('Do MMMM, YYYY. h:mm:ss a')}} 
+                    </div> <br>
+                    {% else %}
+
+                    <h3>No comment</h3>
+                    {% endif %}
+                   
+                    {% endfor %}
+                    </div>
+                        </div>
+                    </div>
+                   
+                <br>
+                <h3>Add a comment</h3>
+            <form method="POST">
+            
+            <div class="form-group">
+                {{render_field(form.name, class="form-control")}}
+            
+            </div>
+            
+            <div class="form-group">
+                    {{render_field(form.content, class="form-control")}}
+                
+                </div>
+            
+            <input type="submit" class="btn btn-primary" value="Send">
+            
+            </form>
+            </div>
+            
+
+                    <div class="col-lg-4">
+                        <div class="blog_right_sidebar">
+                            <aside class="single_sidebar_widget search_widget">
+                            
+                                <form action="/search" method="GET">
+                                    
+                                
+                                    <div class="form-group">
+                                        <div class="input-group mb-3">
+                                                <div class="form-group">
+                                
+                                                             
+                                                    </div>
+                                            <input type="text" class="form-control" name="search" placeholder='Search Keyword'
+                                                onfocus="this.placeholder = ''"
+                                                onblur="this.placeholder = 'Search Keyword'">
+                                            <div class="input-group-append">
+                                                <button class="btn" type="button"><i class="ti-search"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="button rounded-0 primary-bg text-white w-100 btn_1 boxed-btn"
+                                        type="submit">Search</button>
+                                </form>
+                            </aside>
+                             
+
+
+                            
+                            {% endblock %}

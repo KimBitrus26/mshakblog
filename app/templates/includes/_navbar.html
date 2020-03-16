@@ -1,0 +1,27 @@
+<div class="col-xl-8 col-lg-8">
+                            <!-- main-menu -->
+                            <div class="main-menu f-right d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">                                                                                                                                     
+                                        <li><a href="{{ url_for('index') }}">Home</a></li>
+                                        
+                                        <li><a href="{{ url_for('blogs') }}">Blogs</a>
+                                           
+                                        </li>
+                                        <li><a href="{{ url_for('contact')}}">Contact</a></li>
+                                        {% if current_user.is_authenticated %}
+                                        <li><a href="{{url_for('logout')}}">Logout</a></li>
+                                        <li><a href="{{url_for('dashboard')}}">Dashboard</a></li>
+                                        {% else %}
+                                        <li><a href="">Myroom</a>
+                                            <ul class="submenu">
+                                                <li><a href="{{url_for('sign_up')}}">Sign up</a></li>
+                                                <li><a href="{{url_for('login')}}">Sign in</a></li>
+                                            </ul>
+                                        </li>
+                                        
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>             
